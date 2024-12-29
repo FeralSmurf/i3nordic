@@ -1,0 +1,201 @@
+# i3 config file (v4)
+#
+# Please see https://i3wm.org/docs/userguide.html for a complete reference!
+
+### Dependencies ###
+# i3status, dmenu
+
+set $mod Mod4
+
+# Nordic color definitions
+set $nord0  #1E252C
+set $nord1  #2B323E
+set $nord2  #333A46
+set $nord3  #3C4553
+set $nord4  #B8BEC9
+set $nord5  #C5CAD4
+set $nord6  #D2D6DE
+set $nord7  #6F9A9A
+set $nord8  #6A9CAF
+set $nord9  #6289A3
+set $nord10 #4B6589
+set $nord11 #9F4F56
+set $nord12 #A86B5E
+set $nord13 #C4A15F
+set $nord14 #849F74
+set $nord15 #94768A
+
+# Font for window titles
+font pango:DejaVuSansMNerdFont-Regular 8
+
+# Start XDG autostart .desktop files using dex
+exec --no-startup-id dex --autostart --environment i3
+
+# xss-lock and nm-applet
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id nm-applet
+
+# Start picom
+exec --no-startup-id picom &
+
+# Set background
+# exec --no-startup-id feh --bg-scale /home/feralsmurf/Downloads/wallpapers/darkwinter.jpg
+# done with nitrogen, via .xprofile
+
+# Keyboard/language layout
+exec_always --no-startup-id sleep 1 && setxkbmap -layout us,ro -variant ,std -option grp:alt_shift_toggle
+
+# Audio controls
+exec --no-startup-id amixer -q sset Master unmute
+bindsym XF86AudioRaiseVolume exec --no-startup-id amixer -q sset Master 5%+
+bindsym XF86AudioLowerVolume exec --no-startup-id amixer -q sset Master 5%-
+bindsym XF86AudioMute exec --no-startup-id amixer -q sset Master toggle
+bindsym XF86AudioMicMute exec --no-startup-id amixer -q sset Capture toggle
+
+# Use Mouse+$mod to drag floating windows
+floating_modifier $mod
+
+# Window dragging
+tiling_drag modifier titlebar
+
+# Terminal
+bindsym $mod+Return exec --no-startup-id /usr/bin/alacritty
+
+# Kill focused window
+bindsym $mod+Shift+q kill
+
+# Start dmenu
+bindsym $mod+r exec --no-startup-id dmenu_run
+
+# Change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# Alternatively, use cursor keys
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+
+# Alternatively, use cursor keys
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# Split orientation
+bindsym $mod+h split h
+bindsym $mod+v split v
+
+# Fullscreen
+bindsym $mod+f fullscreen toggle
+
+# Container layout
+bindsym $mod+s layout toggle splith splitv
+
+# Floating controls
+bindsym $mod+Shift+f floating toggle
+bindsym $mod+space focus mode_toggle
+
+# Focus parent
+bindsym $mod+a focus parent
+
+# Show all running apps
+bindsym Mod4+o exec --no-startup-id wmctrl -l | awk '{$3=""} {print $0}' | dmenu -i -l 10 | awk '{print $1}' | xargs -r wmctrl -i -a
+
+# Workspaces
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# Switch to workspace
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# Reload/Restart/Exit
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+
+# Gaps
+gaps inner 10
+gaps outer -10
+smart_gaps on
+smart_borders on
+
+# Resize mode
+mode "resize" {
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+i mode "default"
+}
+
+bindsym $mod+d mode "resize"
+
+# Window colors
+client.focused          $nord8   $nord3  $nord6  $nord8  $nord8
+client.focused_inactive $nord3   $nord1  $nord4  $nord3  $nord3
+client.unfocused       $nord3   $nord1  $nord4  $nord3  $nord3
+client.urgent          $nord11  $nord11 $nord6  $nord11 $nord11
+client.placeholder     $nord3   $nord1  $nord4  $nord3  $nord3
+client.background      $nord0
+
+# Bar
+bar {
+        status_command i3status
+        colors {
+                background         $nord0
+                statusline         $nord4
+                focused_statusline $nord4
+                focused_separator  $nord0
+                focused_workspace  $nord3  $nord8  $nord6
+                active_workspace   $nord3  $nord3  $nord6
+                inactive_workspace $nord0  $nord0  $nord4
+                urgent_workspace   $nord3  $nord11 $nord6
+        }
+}
