@@ -76,6 +76,9 @@ exec --no-startup-id feh --bg-scale --zoom fill ~/Downloads/Wallpapers/motherboa
 # Autotiling
 exec_always --no-startup-id autotiling
 
+# Hide mouse cursor after 3 seconds of inactivity
+exec --no-startup-id unclutter --timeout 3
+
 # Battery notification at 20%
 exec --no-startup-id bash -c 'while true; do c=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null); s=$(cat /sys/class/power_supply/BAT*/status 2>/dev/null); if [ "$s" = "Discharging" ] && [ "$c" -le 20 ] 2>/dev/null; then if [ "$n" != 1 ]; then notify-send -t 20000 -u normal -i battery-low "Battery Low" "Battery level is at ${c}%"; n=1; fi; else n=0; fi; sleep 60; done'
 
