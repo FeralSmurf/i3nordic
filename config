@@ -79,8 +79,8 @@ exec_always --no-startup-id autotiling
 # Hide mouse cursor after 3 seconds of inactivity
 exec --no-startup-id unclutter --timeout 3
 
-# Battery notification at 20%
-exec --no-startup-id bash -c 'while true; do c=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null); s=$(cat /sys/class/power_supply/BAT*/status 2>/dev/null); if [ "$s" = "Discharging" ] && [ "$c" -le 20 ] 2>/dev/null; then if [ "$n" != 1 ]; then notify-send -t 20000 -u normal -i battery-low "Battery Low" "Battery level is at ${c}%"; n=1; fi; else n=0; fi; sleep 60; done'
+# Battery notification (20% normal, 10% and 5% critical)
+exec --no-startup-id bash -c 'while true; do c=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null | head -n 1); s=$(cat /sys/class/power_supply/BAT*/status 2>/dev/null | head -n 1); if [ "$s" = "Discharging" ]; then if [ "$c" -le 5 ] 2>/dev/null && [ "${n:-0}" -lt 3 ]; then notify-send -u critical -i battery-empty "Battery Critical" "Battery level is at ${c}%"; n=3; elif [ "$c" -le 10 ] 2>/dev/null && [ "${n:-0}" -lt 2 ]; then notify-send -u critical -i battery-caution "Battery Very Low" "Battery level is at ${c}%"; n=2; elif [ "$c" -le 20 ] 2>/dev/null && [ "${n:-0}" -lt 1 ]; then notify-send -t 20000 -u normal -i battery-low "Battery Low" "Battery level is at ${c}%"; n=1; fi; else n=0; fi; sleep 60; done'
 
 # Brightness
 bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
