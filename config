@@ -79,6 +79,9 @@ exec_always --no-startup-id autotiling
 # Hide mouse cursor after 3 seconds of inactivity
 exec --no-startup-id unclutter --timeout 3
 
+# Battery low/critical notifications
+exec --no-startup-id ~/.config/i3/battery-monitor.sh
+
 
 # Brightness
 bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
