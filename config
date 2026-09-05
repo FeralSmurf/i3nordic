@@ -172,6 +172,13 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
+
+# Capture the full screen and save to Pictures
+bindsym Print exec scrot ~/Pictures/screenshot-%Y-%m-%d-%H%M%S.png
+
+# Capture a selection or window (press Shift + Print, then drag your mouse)
+bindsym --release Shift+Print exec scrot -s ~/Pictures/selection-%Y-%m-%d-%H%M%S.png
+
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
 set $ws1 "1"
